@@ -30,16 +30,23 @@ const checkWin = ()=>{
             document.querySelector('.imgbox').getElementsByTagName('img')[0].style.width = "200px";
             document.querySelector(".line").style.transform = `translate(${e[3]}vw, ${e[4]}vw) rotate(${e[5]}deg)`
             document.querySelector(".line").style.width = "20vw";
+            setTimeout(resetGame, 5000);
         }
     })
+    if(filledBoxCount === 9 && document.getElementsByClassName("info")[0].innerText != '0 Won' && document.getElementsByClassName("info")[0].innerText != 'X Won'){
+        setTimeout(()=>document.querySelector('.info').innerText  = "Draw", 100);
+        setTimeout(resetGame, 5000);
+    }
 }
 
+let filledBoxCount = 0;
 // Game Logic
 // music.play();
 let boxes = document.getElementsByClassName("box");
 Array.from(boxes).forEach(element =>{
     let boxtext = element.querySelector('.boxtext');
     element.addEventListener('click', ()=>{
+        filledBoxCount++;
         if(boxtext.innerText === ''){
             boxtext.innerText = turn;
             turn = changeTurn();
@@ -53,7 +60,9 @@ Array.from(boxes).forEach(element =>{
 })
 
 // Add onclick listener to reset button
-reset.addEventListener('click', ()=>{
+const resetGame = () => {
+    console.log("Reset Button Pressed")
+    filledBoxCount = 0;
     let boxtexts = document.querySelectorAll('.boxtext');
     Array.from(boxtexts).forEach(element => {
         element.innerText = ""
@@ -63,5 +72,4 @@ reset.addEventListener('click', ()=>{
     document.querySelector(".line").style.width = "0vw";
     document.getElementsByClassName("info")[0].innerText  = "Turn for " + turn;
     document.querySelector('.imgbox').getElementsByTagName('img')[0].style.width = "0px"
-})
-
+};
